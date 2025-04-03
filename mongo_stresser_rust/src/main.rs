@@ -10,7 +10,7 @@ use tokio::time::{sleep, Duration};
 async fn main() {
     log4rs::init_file("log4rs.yml", Default::default()).unwrap();
 
-    let uri = "mongodb://localhost:27017"; // Change if necessary
+    let uri = "mongodb://192.168.17.118:27017"; // Change if necessary
     let db_name = "services";
     let collection_name = "services";
     let document_id = "acl"; // Change as needed
@@ -29,6 +29,8 @@ async fn main() {
         for _ in 0..num_tasks {
             let collection_clone = Arc::clone(&collection);
             let handle = task::spawn(async move {
+
+		for _ in 0..10{
                 let filter = doc! { "id": document_id };
                 // Start the timer
                 let retrieval_start = SystemTime::now();
@@ -46,7 +48,8 @@ async fn main() {
                 info!(" {:?} parallel reads, latency: {:?}", num_tasks, retrieval_duration);
                 println!(" {:?} parallel reads, latency: {:?}", num_tasks, retrieval_duration)
 
-            });
+            	}
+		});
             handles.push(handle);
         }
 
