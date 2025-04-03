@@ -1,0 +1,10 @@
+[package]
+name = "mongo_stresser"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.41.1", features = ["full"] }
+mongodb = "3.2.1"
+log= "0.4.0"
+log4rs= "1.3.0"
