@@ -43,7 +43,7 @@ func setup() {
 
 func main() {
 	setup()
-	uri := "mongodb://192.168.17.118:27017" // Change if necessary
+	uri := "mongodb://admin:password@192.168.17.118:27017" // Change if necessary
 	dbName := "services"
 	collectionName := "services"
 	documentID := "acl" // Change as needed
@@ -72,6 +72,9 @@ func main() {
 			handles = append(handles, handle)
 
 			go func() {
+
+				for j:= 0; j<10; j++{
+
 				filter := bson.D{{Key: "id", Value: documentID}}
 				// Start the timer
 				retrievalStart := time.Now()
@@ -92,6 +95,8 @@ func main() {
 				logger.Infof("%d parallel reads, latency: %vms", numTasks, retrievalDuration)
 				fmt.Printf("%d parallel reads, latency: %v\n", numTasks, retrievalDuration)
 
+				}
+
 				close(handle)
 			}()
 		}
@@ -101,7 +106,7 @@ func main() {
 		}
 
 		numTasks++ // Double the load each iteration
-		if numTasks > 51 {
+		if numTasks > 10 {
 			break
 		}
 		time.Sleep(2 * time.Second) // Wait before increasing load
