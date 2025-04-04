@@ -73,7 +73,7 @@ func main() {
 
 			go func() {
 
-				for j:= 0; j<10; j++{
+				for j:= 0; j<100; j++{
 
 				filter := bson.D{{Key: "id", Value: documentID}}
 				// Start the timer
