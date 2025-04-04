@@ -11,13 +11,13 @@ use tokio::time::{sleep, Duration};
 async fn main() {
     log4rs::init_file("log4rs.yml", Default::default()).unwrap();
 
-    let uri = "mongodb://admin:password@192.168.17.118:27017"; // Change if necessary
+    let uri = "mongodb://admin:password@192.168.17.118:27017"; 
     //let uri = "mongodb://localhost:27017";
     let db_name = "services";
     let collection_name = "services";
-    let document_id = "acl"; // Change as needed
+    let document_id = "acl"; 
 
-    // Initialize MongoDB client
+    
     let mut client_options = ClientOptions::parse(uri).await.expect("Failed to parse options");
     //client_options.direct_connection = Some(true);
     //client_options.max_pool_size = Some(10);
@@ -40,7 +40,6 @@ async fn main() {
 
 		for _ in 0..100{
                 let filter = doc! { "id": document_id };
-                // Start the timer
                 let retrieval_start = SystemTime::now();
 
                 match collection_clone.find_one(filter).await {
@@ -65,7 +64,7 @@ async fn main() {
             handle.await.expect("Task failed");
         }
 
-        num_tasks += 1; // Double the load each iteration
+        num_tasks += 1; 
         if num_tasks > 10 {
             exit(0);
         }

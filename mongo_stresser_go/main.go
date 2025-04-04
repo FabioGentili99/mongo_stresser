@@ -32,8 +32,8 @@ func setup() {
 	file, err := os.OpenFile("logs.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err == nil {
 		logger.SetOutput(file)
-		logger.SetLevel(logrus.InfoLevel)    // Log level
-		logger.SetFormatter(&CSVFormatter{}) // Use custom CSV formatter
+		logger.SetLevel(logrus.InfoLevel)
+		logger.SetFormatter(&CSVFormatter{})
 
 	} else {
 		log.Fatal(err)
@@ -43,12 +43,11 @@ func setup() {
 
 func main() {
 	setup()
-	uri := "mongodb://admin:password@192.168.17.118:27017" // Change if necessary
+	uri := "mongodb://admin:password@192.168.17.118:27017"
 	dbName := "services"
 	collectionName := "services"
-	documentID := "acl" // Change as needed
+	documentID := "acl"
 
-	// Initialize MongoDB client
 	clientOptions := options.Client().ApplyURI(uri)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
@@ -73,27 +72,26 @@ func main() {
 
 			go func() {
 
-				for j:= 0; j<100; j++{
+				for j := 0; j < 100; j++ {
 
-				filter := bson.D{{Key: "id", Value: documentID}}
-				// Start the timer
-				retrievalStart := time.Now()
+					filter := bson.D{{Key: "id", Value: documentID}}
+					retrievalStart := time.Now()
 
-				var result bson.M
-				err := collection.FindOne(context.TODO(), filter).Decode(&result)
-				if err != nil {
-					if err == mongo.ErrNoDocuments {
-						fmt.Println("Document not found")
+					var result bson.M
+					err := collection.FindOne(context.TODO(), filter).Decode(&result)
+					if err != nil {
+						if err == mongo.ErrNoDocuments {
+							fmt.Println("Document not found")
+						} else {
+							log.Printf("Error reading document: %v", err)
+						}
 					} else {
-						log.Printf("Error reading document: %v", err)
+						fmt.Printf("Read document: %+v\n", result)
 					}
-				} else {
-					fmt.Printf("Read document: %+v\n", result)
-				}
 
-				retrievalDuration := time.Since(retrievalStart)
-				logger.Infof("%d parallel reads, latency: %vms", numTasks, retrievalDuration)
-				fmt.Printf("%d parallel reads, latency: %v\n", numTasks, retrievalDuration)
+					retrievalDuration := time.Since(retrievalStart)
+					logger.Infof("%d parallel reads, latency: %vms", numTasks, retrievalDuration)
+					fmt.Printf("%d parallel reads, latency: %v\n", numTasks, retrievalDuration)
 
 				}
 
@@ -105,7 +103,7 @@ func main() {
 			<-handle // Wait for each goroutine to finish
 		}
 
-		numTasks++ // Double the load each iteration
+		numTasks++
 		if numTasks > 10 {
 			break
 		}
