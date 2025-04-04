@@ -58,7 +58,7 @@ async fn main() {
         }
 
         num_tasks += 1; // Double the load each iteration
-        if num_tasks > 51 {
+        if num_tasks > 10 {
             exit(0);
         }
         sleep(Duration::from_secs(2)).await; // Wait before increasing load
