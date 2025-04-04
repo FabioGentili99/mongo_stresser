@@ -11,8 +11,8 @@ use tokio::time::{sleep, Duration};
 async fn main() {
     log4rs::init_file("log4rs.yml", Default::default()).unwrap();
 
-    //let uri = "mongodb://admin:password@192.168.17.118:27017"; // Change if necessary
-    let uri = "mongodb://localhost:27017";
+    let uri = "mongodb://admin:password@192.168.17.118:27017"; // Change if necessary
+    //let uri = "mongodb://localhost:27017";
     let db_name = "services";
     let collection_name = "services";
     let document_id = "acl"; // Change as needed
