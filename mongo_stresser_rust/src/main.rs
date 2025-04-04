@@ -30,7 +30,7 @@ async fn main() {
             let collection_clone = Arc::clone(&collection);
             let handle = task::spawn(async move {
 
-		for _ in 0..10{
+		for _ in 0..100{
                 let filter = doc! { "id": document_id };
                 // Start the timer
                 let retrieval_start = SystemTime::now();
