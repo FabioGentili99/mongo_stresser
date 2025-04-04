@@ -54,8 +54,8 @@ async fn main() {
                     .duration_since(retrieval_start)
                     .expect("Clock may have gone backwards");
                 info!(" {:?} parallel reads, latency: {:?}", num_tasks, retrieval_duration);
-                println!(" {:?} parallel reads, latency: {:?}", num_tasks, retrieval_duration)
-
+                println!(" {:?} parallel reads, latency: {:?}", num_tasks, retrieval_duration);
+		sleep(Duration::from_millis(10)).await;
             	}
 		});
             handles.push(handle);
