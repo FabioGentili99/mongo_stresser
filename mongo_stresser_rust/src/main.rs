@@ -19,7 +19,7 @@ async fn main() {
 
     // Initialize MongoDB client
     let mut client_options = ClientOptions::parse(uri).await.expect("Failed to parse options");
-    client_options.direct_connection = Some(true);
+    //client_options.direct_connection = Some(true);
     //client_options.max_pool_size = Some(10);
     let client = Client::with_options(client_options).expect("Failed to create client");
     let collection = client.database(db_name).collection::<mongodb::bson::Document>(collection_name);
@@ -33,9 +33,9 @@ async fn main() {
         
         for _ in 0..num_tasks {
             let collection_clone = Arc::clone(&collection);
-            let find_options = FindOneOptions::builder()
-                .sort(doc! { "$natural": -1 }) // Helps keep document in cache
-                .build();
+            //let find_options = FindOneOptions::builder()
+            //    .sort(doc! { "$natural": -1 }) // Helps keep document in cache
+            //    .build();
             let handle = task::spawn(async move {
 
 		for _ in 0..100{
@@ -43,7 +43,7 @@ async fn main() {
                 // Start the timer
                 let retrieval_start = SystemTime::now();
 
-                match collection_clone.find_one(filter).with_options(find_options.clone()).await {
+                match collection_clone.find_one(filter).await {
                     Ok(Some(doc)) => println!("Read document: {:?}", doc),
                     Ok(None) => println!("Document not found"),
                     Err(e) => eprintln!("Error reading document: {}", e),
