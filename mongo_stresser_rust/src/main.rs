@@ -20,7 +20,7 @@ async fn main() {
     // Initialize MongoDB client
     let mut client_options = ClientOptions::parse(uri).await.expect("Failed to parse options");
     client_options.direct_connection = Some(true);
-    client_options.max_pool_size = Some(10);
+    //client_options.max_pool_size = Some(10);
     let client = Client::with_options(client_options).expect("Failed to create client");
     let collection = client.database(db_name).collection::<mongodb::bson::Document>(collection_name);
     let collection = Arc::new(collection);
